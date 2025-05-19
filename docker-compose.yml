@@ -1,0 +1,47 @@
+services:
+  frontend:
+    image: ashorta/frontend_1
+    container_name: frontend_1
+    build:
+      context: ./client
+    stdin_open: true
+    depends_on:
+      - backend
+    networks:
+      - yolom-network
+    ports:
+      - 3000:3000
+    
+  backend:
+    image: ashorta/backend_1
+    container_name: backend_1
+    build:
+      context: ./backend
+    stdin_open: true
+    depends_on:
+      - mongo
+    networks:
+      - yolom-network
+    ports:
+      - 5000:5000
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/
+  
+  mongo:
+    image: mongo
+    container_name: mongo_db
+    restart: always
+    volumes:
+    - mongo_db:/data/db
+    networks:
+      - yolom-network
+    ports:
+      - 27017:27017
+
+volumes:
+  mongo_db:
+    driver: local
+
+networks:
+  yolom-network:
+    driver: bridge
