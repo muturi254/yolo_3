@@ -35,7 +35,10 @@ app.use(express.json())
 app.use(upload.array()); 
 
 // Cors 
-app.use(cors());
+app.use(cors({
+    origin: 'http://frontend:3000', // Replace with your frontend LoadBalancer or domain
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 
 // Use Route
 app.use('/api/products', productRoute)
