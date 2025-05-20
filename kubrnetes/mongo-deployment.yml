@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-mongo
+  template:
+    metadata:
+      labels:
+        app: app-mongo
+    spec:
+      containers:
+        - name: app-mongo
+          image: mongo:6
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+      volumes:
+        - name: mongo-data
+          emptyDir: {}
